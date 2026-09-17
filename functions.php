@@ -17,8 +17,12 @@
  *                   各テンプレートに <title> を書かなくてよくなる。
  * post-thumbnails … 投稿・固定ページでアイキャッチ画像を使えるようにする。
  *
- * register_nav_menus() で登録した4箇所が、管理画面の
+ * register_nav_menus() で登録した表示位置が、管理画面の
  * 「外観 → メニュー → メニュー設定（表示位置）」に並ぶ。
+ *
+ * いまはグローバルナビ（ヘッダー）だけを登録している。
+ * SPドロワー下部・フッターのナビは、従来どおり rakuen_nav_items() の
+ * 内容をテンプレート側で出している。
  */
 function rakuen_setup(): void
 {
@@ -26,10 +30,7 @@ function rakuen_setup(): void
     add_theme_support('post-thumbnails');
 
     register_nav_menus([
-        'global'     => 'グローバルナビ（ヘッダー）',
-        'drawer'     => 'SPメニュー追加分（ドロワー下部）',
-        'footer'     => 'フッターメニュー',
-        'footer_sub' => 'フッターサブメニュー',
+        'global' => 'グローバルナビ（ヘッダー）',
     ]);
 }
 add_action('after_setup_theme', 'rakuen_setup');
@@ -142,10 +143,7 @@ function rakuen_nav_items(string $group): array
 function rakuen_nav_classes(string $location): array
 {
     $map = [
-        'global'     => ['menu' => 'l-header__menu',                     'item' => 'l-header__item', 'link' => 'l-header__link'],
-        'drawer'     => ['menu' => 'l-header__menu l-header__menu--sub', 'item' => 'l-header__item', 'link' => 'l-header__link'],
-        'footer'     => ['menu' => 'l-footer__menu',                     'item' => 'l-footer__item', 'link' => 'l-footer__link'],
-        'footer_sub' => ['menu' => 'l-footer__menu l-footer__menu--sub', 'item' => 'l-footer__item', 'link' => 'l-footer__link'],
+        'global' => ['menu' => 'l-header__menu', 'item' => 'l-header__item', 'link' => 'l-header__link'],
     ];
 
     return $map[$location] ?? [];
@@ -195,12 +193,9 @@ function rakuen_nav_menu_fallback(array $args): void
         return;
     }
 
-    // 表示位置ごとに、既定の一覧のどれを組み合わせるか
+    // 表示位置ごとに、既定の一覧のどれを使うか
     $groups = [
-        'global'     => ['global'],
-        'drawer'     => ['content', 'utility'],
-        'footer'     => ['global', 'content'],
-        'footer_sub' => ['utility'],
+        'global' => ['global'],
     ];
 
     $items = [];

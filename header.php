@@ -79,7 +79,13 @@ $site_description = get_bloginfo('description', 'display');
                      Figma の SP メニューは5項目しかなく下層ページへ到達できないため、
                      ブログ・お知らせ・運営会社情報などを補っている -->
                 <div class="l-header__drawer-sub">
-                    <?php rakuen_nav_menu('drawer'); ?>
+                    <ul class="l-header__menu l-header__menu--sub">
+                        <?php foreach (array_merge(rakuen_nav_items('content'), rakuen_nav_items('utility')) as $item) : ?>
+                            <li class="l-header__item">
+                                <a class="l-header__link" href="<?php echo esc_url($item['href']); ?>"><?php echo esc_html($item['label']); ?></a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
 
                     <!-- ドロワー内の予約ボタン（ヘッダー右のピルは SP でも常時見えているが、
                          メニューを開いたまま予約できるようにこちらにも置く） -->

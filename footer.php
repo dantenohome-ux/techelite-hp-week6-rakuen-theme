@@ -15,6 +15,9 @@
    ============================================================= */
 
 $theme_uri = get_template_directory_uri();
+
+// フッター宿ナビは2つの一覧をつなげた7項目
+$footer_nav = array_merge(rakuen_nav_items('global'), rakuen_nav_items('content'));
 ?>
     </main>
 
@@ -31,7 +34,13 @@ $theme_uri = get_template_directory_uri();
 
             <!-- 宿ナビ（お部屋 / プラン / 四季 / アクセス / サービス / ブログ / お知らせ） -->
             <nav class="l-footer__nav" aria-label="サイトマップ">
-                <?php rakuen_nav_menu('footer'); ?>
+                <ul class="l-footer__menu">
+                    <?php foreach ($footer_nav as $item) : ?>
+                        <li class="l-footer__item">
+                            <a class="l-footer__link" href="<?php echo esc_url($item['href']); ?>"><?php echo esc_html($item['label']); ?></a>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
             </nav>
 
             <hr class="l-footer__divider">
@@ -51,7 +60,13 @@ $theme_uri = get_template_directory_uri();
 
             <!-- サブナビ（運営会社情報 / プライバシーポリシー / 利用規約） -->
             <nav class="l-footer__nav l-footer__nav--sub" aria-label="サブナビゲーション">
-                <?php rakuen_nav_menu('footer_sub'); ?>
+                <ul class="l-footer__menu l-footer__menu--sub">
+                    <?php foreach (rakuen_nav_items('utility') as $item) : ?>
+                        <li class="l-footer__item">
+                            <a class="l-footer__link" href="<?php echo esc_url($item['href']); ?>"><?php echo esc_html($item['label']); ?></a>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
             </nav>
 
             <!-- Figma の表記どおり年号なし。&copy; は © の実体参照 -->
