@@ -234,6 +234,22 @@ body.is-nav-open {
     background-color: transparent;
 }
 
+/* ログイン中だけ、WordPress の管理バーのぶんだけ下げる。
+   管理バーは html に margin-top を付けて本文を押し下げるが、
+   position: absolute のこのヘッダーはその影響を受けずページ最上部に
+   留まるため、そのままだと管理バーの下に潜り込んでしまう。
+   admin-bar クラスは、ログイン中に WordPress が body に付ける。
+   32px / 46px は管理バーの高さ（782px 以下で高くなる）。 */
+.admin-bar .l-header--transparent {
+    top: 32px;
+}
+
+@media screen and (max-width: 782px) {
+    .admin-bar .l-header--transparent {
+        top: 46px;
+    }
+}
+
 .l-header__inner {
     display: flex;
     align-items: center;
