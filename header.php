@@ -70,14 +70,10 @@ $site_description = get_bloginfo('description', 'display');
                  id="global-nav" は main.js が参照しているので変更しないこと -->
             <nav class="l-header__nav" id="global-nav" aria-label="メインナビゲーション">
 
-                <!-- 主要5項目。PC ではこれだけが横並びで見える -->
-                <ul class="l-header__menu">
-                    <?php foreach (rakuen_nav_items('global') as $item) : ?>
-                        <li class="l-header__item">
-                            <a class="l-header__link" href="<?php echo esc_url($item['href']); ?>"><?php echo esc_html($item['label']); ?></a>
-                        </li>
-                    <?php endforeach; ?>
-                </ul>
+                <!-- 主要5項目。PC ではこれだけが横並びで見える。
+                     中身は管理画面「外観 → メニュー」の
+                     「グローバルナビ（ヘッダー）」で編集する -->
+                <?php rakuen_nav_menu('global'); ?>
 
                 <!-- ここから下は SP ドロワーのみ表示（PC ではフッターが受け持つ）。
                      Figma の SP メニューは5項目しかなく下層ページへ到達できないため、
