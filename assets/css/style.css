@@ -302,8 +302,12 @@ body.is-nav-open {
     text-indent: var(--letter-spacing);  /* 字間で中央がずれる分を左に足して打ち消す */
 }
 
-/* 現在地。Figma は下線で表現している */
-.l-header__link.is-current {
+/* 現在地。Figma は下線で表現している。
+   current-menu-item / current-menu-ancestor は WordPress が
+   現在地のメニュー項目（<li>）に付けるクラス */
+.l-header__link.is-current,
+.l-header__item.current-menu-item .l-header__link,
+.l-header__item.current-menu-ancestor .l-header__link {
     text-decoration: underline;
     text-underline-offset: 6px;
 }
@@ -474,7 +478,9 @@ body.is-nav-open {
     opacity: .6;
 }
 
-.l-footer__link.is-current {
+.l-footer__link.is-current,
+.l-footer__item.current-menu-item .l-footer__link,
+.l-footer__item.current-menu-ancestor .l-footer__link {
     text-decoration: underline;
     text-underline-offset: 6px;
 }
