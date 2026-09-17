@@ -1,0 +1,53 @@
+# =============================================================
+# 楽園雅苑 / Apache 設定
+#
+# ディレクトリ型URL（/about/ など）へ移行する際は、
+# ここに書き換えルールを足す。
+#
+# ※ PHP の内蔵サーバー（php -S）はこのファイルを読まない。
+#    圧縮とキャッシュの効きを確かめるには Apache で動かすこと。
+# =============================================================
+
+# 存在しない URL を開いたときに出すページ。
+# 先頭を / にしてドキュメントルートからの絶対パスで指す
+ErrorDocument 404 /404.php
+
+# ディレクトリを開いたときに探すファイル
+DirectoryIndex index.php
+
+
+# ---- テキストの圧縮 ------------------------------------------
+# HTML・CSS・JS はそのまま送ると容量が大きい（style.css は約95KB）。
+# gzip で送ると 1/5 以下になり、表示開始が早くなる。
+# 画像（JPEG・PNG）は既に圧縮済みなので対象にしない
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript application/javascript
+    AddOutputFilterByType DEFLATE image/svg+xml
+    AddOutputFilterByType DEFLATE application/json
+</IfModule>
+
+
+# ---- ブラウザキャッシュ --------------------------------------
+# 2回目以降の表示で再ダウンロードを省く。
+#
+# CSS・JS を短め（7日）にしているのは、ファイル名に版番号を付けて
+# いないため。長くすると修正しても古いものが表示され続ける。
+# 将来 style.css?v=2 のように版番号を付ける仕組みを入れたら、
+# 1年（access plus 1 year）まで延ばしてよい。
+<IfModule mod_expires.c>
+    ExpiresActive On
+
+    ExpiresByType text/css                  "access plus 7 days"
+    ExpiresByType text/javascript           "access plus 7 days"
+    ExpiresByType application/javascript    "access plus 7 days"
+
+    ExpiresByType image/jpeg                "access plus 30 days"
+    ExpiresByType image/png                 "access plus 30 days"
+    ExpiresByType image/svg+xml             "access plus 30 days"
+    ExpiresByType image/x-icon              "access plus 30 days"
+
+    # HTML は毎回確かめる（内容が変わるため）
+    ExpiresByType text/html                 "access plus 0 seconds"
+</IfModule>

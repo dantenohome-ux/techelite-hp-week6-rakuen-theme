@@ -1,0 +1,28 @@
+# ---- OS が勝手に作るファイル ----
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---- エディタ / IDE ----
+.vscode/
+.idea/
+*.swp
+*~
+
+# ---- ログ・一時ファイル ----
+*.log
+*.tmp
+*.bak
+*.orig
+
+# ---- ビルドツールを入れた場合 ----
+node_modules/
+vendor/
+.sass-cache/
+*.css.map
+
+# ---- 環境依存の設定（WordPress 本体側の設定はこのテーマに含めない）----
+.env
+
+# ---- 動作確認用のスクリーンショット（Playwright）----
+.playwright-mcp/
