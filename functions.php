@@ -20,9 +20,9 @@
  * register_nav_menus() で登録した表示位置が、管理画面の
  * 「外観 → メニュー → メニュー設定（表示位置）」に並ぶ。
  *
- * いまはグローバルナビ（ヘッダー）だけを登録している。
- * SPドロワー下部・フッターのナビは、従来どおり rakuen_nav_items() の
- * 内容をテンプレート側で出している。
+ * 登録しているのはヘッダーのグローバルナビとフッターの2つのナビ。
+ * SPドロワー下部だけは、従来どおり rakuen_nav_items() の内容を
+ * テンプレート側で出している。
  */
 function rakuen_setup(): void
 {
@@ -30,7 +30,9 @@ function rakuen_setup(): void
     add_theme_support('post-thumbnails');
 
     register_nav_menus([
-        'global' => 'グローバルナビ（ヘッダー）',
+        'global'     => 'グローバルナビ（ヘッダー）',
+        'footer'     => 'フッターメニュー（サイトマップ）',
+        'footer_sub' => 'フッターサブメニュー',
     ]);
 }
 add_action('after_setup_theme', 'rakuen_setup');
@@ -143,7 +145,9 @@ function rakuen_nav_items(string $group): array
 function rakuen_nav_classes(string $location): array
 {
     $map = [
-        'global' => ['menu' => 'l-header__menu', 'item' => 'l-header__item', 'link' => 'l-header__link'],
+        'global'     => ['menu' => 'l-header__menu',                     'item' => 'l-header__item', 'link' => 'l-header__link'],
+        'footer'     => ['menu' => 'l-footer__menu',                     'item' => 'l-footer__item', 'link' => 'l-footer__link'],
+        'footer_sub' => ['menu' => 'l-footer__menu l-footer__menu--sub', 'item' => 'l-footer__item', 'link' => 'l-footer__link'],
     ];
 
     return $map[$location] ?? [];
@@ -193,9 +197,11 @@ function rakuen_nav_menu_fallback(array $args): void
         return;
     }
 
-    // 表示位置ごとに、既定の一覧のどれを使うか
+    // 表示位置ごとに、既定の一覧のどれを組み合わせるか
     $groups = [
-        'global' => ['global'],
+        'global'     => ['global'],
+        'footer'     => ['global', 'content'],
+        'footer_sub' => ['utility'],
     ];
 
     $items = [];

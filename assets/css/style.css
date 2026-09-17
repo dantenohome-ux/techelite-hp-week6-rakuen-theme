@@ -478,7 +478,9 @@ body.is-nav-open {
     opacity: .6;
 }
 
-.l-footer__link.is-current {
+.l-footer__link.is-current,
+.l-footer__item.current-menu-item .l-footer__link,
+.l-footer__item.current-menu-ancestor .l-footer__link {
     text-decoration: underline;
     text-underline-offset: 6px;
 }

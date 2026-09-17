@@ -4,20 +4,16 @@
 
    各テンプレートの最後で get_footer() を呼ぶと、このファイルが読み込まれる。
 
-   ナビのリンクは functions.php の rakuen_nav_items() から取り出す。
-   header.php で作った変数はここからは見えない（WordPress はテンプレートを
-   関数の中で読み込むため）ので、定義を関数側に置いている。
+   2つのナビはどちらも管理画面「外観 → メニュー」で編集する。
+   出力は functions.php の rakuen_nav_menu() に任せる。
 
-   宿ナビ（7項目） = global（5） ＋ content（2）
-   サブナビ（3項目） = utility
+     宿ナビ（7項目）   … 表示位置「フッターメニュー（サイトマップ）」
+     サブナビ（3項目） … 表示位置「フッターサブメニュー」
 
-   TODO: 手順3で wp_nav_menu() に置き換える。
+   メニューが未割り当てのときは、rakuen_nav_items() の既定の内容が出る。
    ============================================================= */
 
 $theme_uri = get_template_directory_uri();
-
-// フッター宿ナビは2つの一覧をつなげた7項目
-$footer_nav = array_merge(rakuen_nav_items('global'), rakuen_nav_items('content'));
 ?>
     </main>
 
@@ -34,13 +30,7 @@ $footer_nav = array_merge(rakuen_nav_items('global'), rakuen_nav_items('content'
 
             <!-- 宿ナビ（お部屋 / プラン / 四季 / アクセス / サービス / ブログ / お知らせ） -->
             <nav class="l-footer__nav" aria-label="サイトマップ">
-                <ul class="l-footer__menu">
-                    <?php foreach ($footer_nav as $item) : ?>
-                        <li class="l-footer__item">
-                            <a class="l-footer__link" href="<?php echo esc_url($item['href']); ?>"><?php echo esc_html($item['label']); ?></a>
-                        </li>
-                    <?php endforeach; ?>
-                </ul>
+                <?php rakuen_nav_menu('footer'); ?>
             </nav>
 
             <hr class="l-footer__divider">
@@ -60,13 +50,7 @@ $footer_nav = array_merge(rakuen_nav_items('global'), rakuen_nav_items('content'
 
             <!-- サブナビ（運営会社情報 / プライバシーポリシー / 利用規約） -->
             <nav class="l-footer__nav l-footer__nav--sub" aria-label="サブナビゲーション">
-                <ul class="l-footer__menu l-footer__menu--sub">
-                    <?php foreach (rakuen_nav_items('utility') as $item) : ?>
-                        <li class="l-footer__item">
-                            <a class="l-footer__link" href="<?php echo esc_url($item['href']); ?>"><?php echo esc_html($item['label']); ?></a>
-                        </li>
-                    <?php endforeach; ?>
-                </ul>
+                <?php rakuen_nav_menu('footer_sub'); ?>
             </nav>
 
             <!-- Figma の表記どおり年号なし。&copy; は © の実体参照 -->
