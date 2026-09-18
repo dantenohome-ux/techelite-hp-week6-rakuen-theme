@@ -2,31 +2,30 @@
 /* =============================================================
    404（ページが見つかりません）
 
+   WordPress は、該当する投稿・固定ページが見つからないときに
+   このファイルを使う（テンプレート名が予約されている）。
+
    Figma にこのページのデザインは無いため、既存の部品だけで組んでいる。
    ページ見出し（.p-page-head）と、TOP へ戻るボタン（.c-btn-more）。
    新しい見た目は足していない。
 
-   .htaccess の ErrorDocument からこのファイルを指している。
-   その場合 PHP は 200 を返してしまうので、先頭で 404 を送り直す。
-   「見つからない」と表示しながら 200 を返すと、検索エンジンに
-   中身のあるページとして登録されてしまうため。
+   静的サイト版からの変更点：
+     ・http_response_code(404) は不要（WordPress が 404 を返す）
+     ・<title> と noindex も不要
+       （title-tag と WordPress の自動 noindex に任せる）
+     ・パンくずは template-parts/breadcrumb.php を使う
+     ・リンク先は home_url()
    ============================================================= */
 
-http_response_code(404);
+get_header();
 
-$page_title       = 'ページが見つかりません｜楽園雅苑';
-$page_description = 'お探しのページは見つかりませんでした。';
-$page_noindex     = true;
-
-$breadcrumb = [
-    ['href' => '/', 'label' => 'トップ'],
-    ['label' => 'ページが見つかりません'],
-];
-
-require __DIR__ . '/includes/header.php';
+get_template_part('template-parts/breadcrumb', null, [
+    'items' => [
+        ['href' => home_url('/'), 'label' => 'トップ'],
+        ['label' => 'ページが見つかりません'],
+    ],
+]);
 ?>
-
-        <?php require __DIR__ . '/includes/breadcrumb.php'; ?>
 
         <div class="p-page-head">
             <h1 class="p-page-head__title">ページが見つかりません</h1>
@@ -38,7 +37,7 @@ require __DIR__ . '/includes/header.php';
                 <p class="p-page-lead">お探しのページは、移動または削除された可能性があります。お手数ですが、トップページからお探しください。</p>
 
                 <div class="p-notfound__action">
-                    <a class="c-btn-more" href="/">
+                    <a class="c-btn-more" href="<?php echo esc_url(home_url('/')); ?>">
                         <span class="c-btn-more__label">トップページへ</span>
                         <svg class="c-btn-more__arrow" width="21" height="7" viewBox="0 0 21.2125 6.85466"
                              fill="none" aria-hidden="true" focusable="false">
@@ -49,4 +48,5 @@ require __DIR__ . '/includes/header.php';
             </div>
         </section>
 
-<?php require __DIR__ . '/includes/footer.php'; ?>
+<?php
+get_footer();
