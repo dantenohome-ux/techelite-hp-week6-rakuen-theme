@@ -29,6 +29,9 @@ function rakuen_setup(): void
     add_theme_support('title-tag');
     add_theme_support('post-thumbnails');
 
+    // 記事カード（.c-card-article__thumb）用。Figma実測 380×230、trueで切り抜き
+    add_image_size('blog-thumb', 380, 230, true);
+
     register_nav_menus([
         'global'     => 'グローバルナビ（ヘッダー）',
         'footer'     => 'フッターメニュー（サイトマップ）',
@@ -85,6 +88,31 @@ function rakuen_enqueue_assets(): void
     );
 }
 add_action('wp_enqueue_scripts', 'rakuen_enqueue_assets');
+
+
+/**
+ * 抜粋を日本語向けに調整する。
+ *
+ * wp_trim_excerpt() は半角スペース区切りの「単語数」で本文を切るため、
+ * スペースの無い日本語の文章では実質的に切れず、本文が丸ごと出てしまう。
+ * 手動で抜粋を入力した記事はそのまま使い、それ以外だけ本文を文字数で切る。
+ */
+function rakuen_custom_excerpt(string $excerpt): string
+{
+    if (has_excerpt()) {
+        return $excerpt;
+    }
+
+    $length = 80;
+    $text   = wp_strip_all_tags(strip_shortcodes(get_the_content()));
+
+    if (mb_strlen($text) <= $length) {
+        return $text;
+    }
+
+    return mb_substr($text, 0, $length) . '…';
+}
+add_filter('get_the_excerpt', 'rakuen_custom_excerpt');
 
 
 /**
