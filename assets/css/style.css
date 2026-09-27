@@ -815,6 +815,17 @@ body.is-nav-open {
     line-height: 25px;
 }
 
+.c-card-article__excerpt {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    margin-top: 8px;
+    font-size: 12px;
+    line-height: 22px;
+    color: var(--color-placeholder);
+}
+
 
 /* -------------------------------------------------------------
    7-5. お知らせの1行 `.c-list-news`
@@ -1892,6 +1903,37 @@ body.is-nav-open {
     margin-top: 40px;
 }
 
+/* the_posts_pagination() が出す既定のマークアップ（.page-numbers）に、
+   7-11で定義済みの数字ピッチ・配色を適用する */
+.c-pagination .nav-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.c-pagination .page-numbers {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+    font-family: var(--font-serif);
+    font-size: 16px;
+    color: var(--color-placeholder);
+    transition: color .3s ease, background-color .3s ease;
+}
+
+.c-pagination .page-numbers.current {
+    background-color: var(--color-text);
+    color: var(--color-white);
+}
+
+.c-pagination .page-numbers:not(.current):not(.dots):hover,
+.c-pagination .page-numbers:not(.current):not(.dots):focus-visible {
+    color: var(--color-text);
+}
+
 
 /* -------------------------------------------------------------
    9-5. お知らせ一覧
@@ -2014,6 +2056,59 @@ body.is-nav-open {
 .p-article__table .c-table__value {
     font-size: 12px;
     line-height: 24px;
+}
+
+/* メタ行では日付と横並びになるので、カード用の上マージンを打ち消す */
+.p-article__meta .p-article__cat {
+    margin-top: 0;
+}
+
+/* ---- タグ ---- */
+.p-article__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 24px;
+}
+
+.p-article__tag a {
+    display: inline-block;
+    padding-inline: 16px;
+    border: 1px solid var(--color-border);
+    border-radius: 13px;
+    font-family: var(--font-serif);
+    font-size: 12px;
+    line-height: 25px;
+    color: var(--color-text);
+    transition: background-color .3s ease, border-color .3s ease, color .3s ease;
+}
+
+.p-article__tag a:hover,
+.p-article__tag a:focus-visible {
+    background-color: var(--color-main);
+    border-color: var(--color-main);
+    color: var(--color-white);
+}
+
+/* ---- 前後の記事 ---- */
+.p-article__nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--color-border);
+    font-family: var(--font-serif);
+    font-size: 14px;
+}
+
+.p-article__nav a {
+    transition: color .3s ease;
+}
+
+.p-article__nav a:hover,
+.p-article__nav a:focus-visible {
+    color: var(--color-main);
 }
 
 /* ---- サイドバー ---- */
@@ -3922,3 +4017,11 @@ body.is-nav-open {
         animation-iteration-count: 1 !important;
     }
 }
+
+.post__body h2 { font-size: 1.5rem; margin: 2em 0 0.5em; border-left: 4px solid var(--color-accent); padding-left: 0.5em; }
+.post__body p  { line-height: 1.9; margin-bottom: 1.5em; }
+.post__body img { max-width: 100%; height: auto; }
+.post__body ul { padding-left: 1.5em; list-style: disc; }
+
+.pagination .page-numbers { display:inline-block; padding:0.4em 0.8em; border:1px solid #ddd; margin:0 2px; text-decoration:none; }
+.pagination .page-numbers.current { background: var(--color-accent); color:#fff; border-color: var(--color-accent); }
