@@ -271,3 +271,43 @@ function rakuen_nav_menu_link_attributes(array $atts, $item, $args): array
     return $atts;
 }
 add_filter('nav_menu_link_attributes', 'rakuen_nav_menu_link_attributes', 10, 3);
+
+
+/**
+ * TOP内アンカー（# を含むカスタムリンク）を現在地扱いにしない。
+ *
+ * WordPress はカスタムリンクの現在地を判定するとき、URL から # 以降を
+ * 切り捨てて現在のURLと比べる（wp-includes/nav-menu-template.php）。
+ * そのため /#room /#plan /#seasons /#access はすべて「TOPへのリンク」と
+ * 見なされ、TOP を開くと4項目が同時にハイライトされてしまう。
+ *
+ * URL のフラグメント（#room の部分）はブラウザの中だけで使われ、
+ * サーバーには送られない。つまりアンカーリンクは、サーバー側では
+ * 現在地かどうかを判定しようがない。だから一律で現在地扱いを外す。
+ *
+ * current プロパティを false に戻しているのは、クラスだけでなく
+ * aria-current="page" の出力も止めるため（どちらも判定元が同じ）。
+ *
+ * 対象外：固定ページの項目（type が post_type）と、
+ *         # を含まないカスタムリンク（従来どおり現在地になる）。
+ *
+ * @param array<int, WP_Post> $menu_items
+ * @return array<int, WP_Post>
+ */
+function rakuen_nav_menu_clear_anchor_current(array $menu_items): array
+{
+    foreach ($menu_items as $menu_item) {
+        if ($menu_item->type !== 'custom' || strpos((string) $menu_item->url, '#') === false) {
+            continue;
+        }
+
+        $menu_item->current = false;
+        $menu_item->classes = array_diff(
+            (array) $menu_item->classes,
+            ['current-menu-item', 'current_page_item', 'current-menu-ancestor', 'current-menu-parent']
+        );
+    }
+
+    return $menu_items;
+}
+add_filter('wp_nav_menu_objects', 'rakuen_nav_menu_clear_anchor_current');
