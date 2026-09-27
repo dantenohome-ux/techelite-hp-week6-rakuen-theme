@@ -797,6 +797,13 @@ body.is-nav-open {
     line-height: 26px;
 }
 
+/* サムネイルとタイトルが別々の<a>になっているため、
+   タイトル側にもホバー時の見た目を付ける */
+.c-card-article__title a:hover,
+.c-card-article__title a:focus-visible {
+    text-decoration: underline;
+}
+
 /* カテゴリの札。幅は文字数なりに決まる（Figma も3文字/2文字で幅が違う） */
 .c-card-article__tag {
     display: inline-block;
@@ -1897,6 +1904,12 @@ body.is-nav-open {
     display: grid;
     gap: 24px;
     margin-top: 40px;
+}
+
+.p-blog-list__empty {
+    margin-top: 40px;
+    text-align: center;
+    color: var(--color-placeholder);
 }
 
 .c-pagination {
@@ -4018,10 +4031,46 @@ body.is-nav-open {
     }
 }
 
-.post__body h2 { font-size: 1.5rem; margin: 2em 0 0.5em; border-left: 4px solid var(--color-accent); padding-left: 0.5em; }
-.post__body p  { line-height: 1.9; margin-bottom: 1.5em; }
-.post__body img { max-width: 100%; height: auto; }
-.post__body ul { padding-left: 1.5em; list-style: disc; }
+/* the_content() が出す無装飾のタグ（見出し・段落・画像・リスト）を整える。
+   ブロックエディタの出力にはクラスが付かないため、要素セレクタで当てる。
+   .post__body は single.php の .p-article__body に併記しているクラス */
+.post__body h2 {
+    margin: 2em 0 0.5em;
+    border-left: 4px solid var(--color-main);
+    padding-left: 0.5em;
+    font-size: 1.5rem;
+}
 
-.pagination .page-numbers { display:inline-block; padding:0.4em 0.8em; border:1px solid #ddd; margin:0 2px; text-decoration:none; }
-.pagination .page-numbers.current { background: var(--color-accent); color:#fff; border-color: var(--color-accent); }
+.post__body h3 {
+    margin: 1.8em 0 0.5em;
+    font-size: 1.25rem;
+}
+
+.post__body p {
+    margin-bottom: 1.5em;
+    line-height: 1.9;
+}
+
+.post__body img {
+    max-width: 100%;
+    height: auto;
+}
+
+.post__body ul,
+.post__body ol {
+    margin-bottom: 1.5em;
+    padding-left: 1.5em;
+}
+
+.post__body ul {
+    list-style: disc;
+}
+
+.post__body ol {
+    list-style: decimal;
+}
+
+.post__body a {
+    color: var(--color-main);
+    text-decoration: underline;
+}

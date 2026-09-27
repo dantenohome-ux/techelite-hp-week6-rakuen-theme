@@ -1,13 +1,9 @@
 <?php
 /* =============================================================
-   ブログ一覧（home.php）
+   カテゴリー絞り込み一覧（category.php）
 
-   「投稿ページ」に割り当てた固定ページを開いたときに使われる
-   テンプレート。メインループをそのまま新着順の一覧として出す。
-
-   見た目は運営会社・規約類と同じ下層ページの型
-   （パンくず → ページ見出し → 本文）に、ブログ一覧用の
-   `.p-blog-list`（style.css 9-4）を組み合わせる。
+   見た目は home.php のブログ一覧（.p-blog-list）と共通。
+   見出しは spec どおり single_cat_title() を使う。
    ============================================================= */
 
 get_header();
@@ -15,17 +11,22 @@ get_header();
 get_template_part('template-parts/breadcrumb', null, [
     'items' => [
         ['href' => home_url('/'), 'label' => 'トップ'],
-        ['label' => 'ブログ'],
+        ['href' => get_permalink(get_option('page_for_posts')), 'label' => 'ブログ'],
+        ['label' => single_cat_title('', false)],
     ],
 ]);
 ?>
 
 <div class="p-page-head">
-    <h1 class="p-page-head__title">ブログ</h1>
+    <h1 class="p-page-head__title"><?php single_cat_title('カテゴリー：'); ?></h1>
 </div>
 
 <section class="p-blog-list">
     <div class="p-blog-list__inner l-inner">
+
+        <?php if (category_description()) : ?>
+            <p class="p-page-lead"><?php echo wp_kses_post(category_description()); ?></p>
+        <?php endif; ?>
 
         <?php if (have_posts()) : ?>
 
@@ -47,7 +48,7 @@ get_template_part('template-parts/breadcrumb', null, [
             </div>
 
         <?php else : ?>
-            <p class="p-blog-list__empty">記事がまだありません。</p>
+            <p class="p-blog-list__empty">このカテゴリーの記事はまだありません。</p>
         <?php endif; ?>
 
     </div>
