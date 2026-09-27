@@ -1,13 +1,9 @@
 <?php
 /* =============================================================
-   ブログ一覧（home.php）
+   タグ絞り込み一覧（tag.php）
 
-   「投稿ページ」に割り当てた固定ページを開いたときに使われる
-   テンプレート。メインループをそのまま新着順の一覧として出す。
-
-   見た目は運営会社・規約類と同じ下層ページの型
-   （パンくず → ページ見出し → 本文）に、ブログ一覧用の
-   `.p-blog-list`（style.css 9-4）を組み合わせる。
+   category.php と同じ型（.p-blog-list）。見出しは single_tag_title()、
+   説明文があれば tag_description() を .p-page-lead で表示する。
    ============================================================= */
 
 get_header();
@@ -15,17 +11,22 @@ get_header();
 get_template_part('template-parts/breadcrumb', null, [
     'items' => [
         ['href' => home_url('/'), 'label' => 'トップ'],
-        ['label' => 'ブログ'],
+        ['href' => get_permalink(get_option('page_for_posts')), 'label' => 'ブログ'],
+        ['label' => single_tag_title('', false)],
     ],
 ]);
 ?>
 
 <div class="p-page-head">
-    <h1 class="p-page-head__title">ブログ</h1>
+    <h1 class="p-page-head__title"><?php single_tag_title('タグ：'); ?></h1>
 </div>
 
 <section class="p-blog-list">
     <div class="p-blog-list__inner l-inner">
+
+        <?php if (tag_description()) : ?>
+            <p class="p-page-lead"><?php echo wp_kses_post(tag_description()); ?></p>
+        <?php endif; ?>
 
         <?php if (have_posts()) : ?>
 
@@ -38,7 +39,7 @@ get_template_part('template-parts/breadcrumb', null, [
             <?php get_template_part('template-parts/pagination'); ?>
 
         <?php else : ?>
-            <p class="p-blog-list__empty">記事がまだありません。</p>
+            <p class="p-blog-list__empty">このタグの記事はまだありません。</p>
         <?php endif; ?>
 
     </div>
