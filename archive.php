@@ -1,13 +1,12 @@
 <?php
 /* =============================================================
-   ブログ一覧（home.php）
+   汎用アーカイブ（archive.php）
 
-   「投稿ページ」に割り当てた固定ページを開いたときに使われる
-   テンプレート。メインループをそのまま新着順の一覧として出す。
+   カテゴリー以外のアーカイブ（タグ・日付など）で使われる。
+   カテゴリーアーカイブは category.php が優先されるため、
+   ここでは the_archive_title() を汎用の見出しとして使う。
 
-   見た目は運営会社・規約類と同じ下層ページの型
-   （パンくず → ページ見出し → 本文）に、ブログ一覧用の
-   `.p-blog-list`（style.css 9-4）を組み合わせる。
+   見た目は home.php のブログ一覧（.p-blog-list）と共通。
    ============================================================= */
 
 get_header();
@@ -15,13 +14,14 @@ get_header();
 get_template_part('template-parts/breadcrumb', null, [
     'items' => [
         ['href' => home_url('/'), 'label' => 'トップ'],
-        ['label' => 'ブログ'],
+        ['href' => get_permalink(get_option('page_for_posts')), 'label' => 'ブログ'],
+        ['label' => wp_strip_all_tags(get_the_archive_title())],
     ],
 ]);
 ?>
 
 <div class="p-page-head">
-    <h1 class="p-page-head__title">ブログ</h1>
+    <h1 class="p-page-head__title"><?php the_archive_title(); ?></h1>
 </div>
 
 <section class="p-blog-list">
@@ -47,7 +47,7 @@ get_template_part('template-parts/breadcrumb', null, [
             </div>
 
         <?php else : ?>
-            <p class="p-blog-list__empty">記事がまだありません。</p>
+            <p class="p-blog-list__empty">該当する記事がありません。</p>
         <?php endif; ?>
 
     </div>

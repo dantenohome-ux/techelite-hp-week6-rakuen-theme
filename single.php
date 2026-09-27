@@ -22,8 +22,8 @@ get_template_part('template-parts/breadcrumb', null, [
 while (have_posts()) :
     the_post();
 
-    $category_names = wp_list_pluck(get_the_category(), 'name');
-    $tags           = get_the_tags();
+    $category_list = get_the_category_list(', ');
+    $tags          = get_the_tags();
     ?>
 
     <article class="p-article">
@@ -35,8 +35,8 @@ while (have_posts()) :
                     <time class="p-article__date" datetime="<?php echo esc_attr(get_the_date('c')); ?>">
                         <?php echo esc_html(get_the_date('Y.m.d')); ?>
                     </time>
-                    <?php if ($category_names) : ?>
-                        <span class="c-card-article__tag p-article__cat"><?php echo esc_html(implode(', ', $category_names)); ?></span>
+                    <?php if ($category_list) : ?>
+                        <span class="c-card-article__tag p-article__cat"><?php echo $category_list; ?></span>
                     <?php endif; ?>
                 </div>
             </header>
@@ -45,7 +45,7 @@ while (have_posts()) :
                 <?php the_post_thumbnail('large', ['class' => 'p-article__hero']); ?>
             <?php endif; ?>
 
-            <div class="p-article__body">
+            <div class="p-article__body post__body">
                 <?php the_content(); ?>
             </div>
 
