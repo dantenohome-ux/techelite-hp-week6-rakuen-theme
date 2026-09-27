@@ -13,10 +13,15 @@
    見出しのタグは $args['heading'] で 'h2' / 'h3' に切り替えられる。
    置かれる場所によって見出しの階層が変わるため（省略時は h2）。
      ブログ一覧・カテゴリー一覧 … h1 の直下なので h2
-     関連記事               … セクション見出し h2 の下なので h3
+     TOP・関連記事           … セクション見出し h2 の下なので h3
+
+   $args['excerpt'] を false にすると抜粋を出さない。
+   TOP の新着3件は Figma のカード高さ（380×398）に抜粋を含まない
+   ため、そこだけ false を渡す。
    ============================================================= */
 
 $heading  = in_array($args['heading'] ?? '', ['h2', 'h3'], true) ? $args['heading'] : 'h2';
+$show_excerpt = ($args['excerpt'] ?? true) !== false;
 $permalink = get_permalink();
 $category_list = get_the_category_list(', ');
 ?>
@@ -40,7 +45,9 @@ $category_list = get_the_category_list(', ');
         <?php if ($category_list) : ?>
             <span class="c-card-article__tag"><?php echo $category_list; ?></span>
         <?php endif; ?>
-        <p class="c-card-article__excerpt"><?php echo esc_html(get_the_excerpt()); ?></p>
+        <?php if ($show_excerpt) : ?>
+            <p class="c-card-article__excerpt"><?php echo esc_html(get_the_excerpt()); ?></p>
+        <?php endif; ?>
     </div>
 
 </article>

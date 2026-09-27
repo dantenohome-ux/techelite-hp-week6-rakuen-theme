@@ -756,10 +756,11 @@ body.is-nav-open {
     background-color: var(--color-bg-gray);
 }
 
-/* カード全体をリンクにする。ブロック要素にして面で押せるようにする */
+/* サムネイルだけを包む<a>。以前はカード全体を包んでいたため
+   height:100%だったが、いまはサムネ専用なので指定しない
+   （グリッドで揃えられた高さいっぱいに伸びて、下に空白ができるため） */
 .c-card-article__link {
     display: block;
-    height: 100%;
 }
 
 .c-card-article__thumb {
