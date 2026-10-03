@@ -756,10 +756,13 @@ body.is-nav-open {
     background-color: var(--color-bg-gray);
 }
 
-/* カード全体をリンクにする。ブロック要素にして面で押せるようにする */
+/* サムネイルをリンクにする。ブロック要素にして面で押せるようにする。
+   height:100% は付けない：グリッドの行高は「同じ行で一番長いカード」に
+   揃うため、height:100% を付けると短いカードのリンクだけその高さまで
+   伸びてしまい、後ろの .c-card-article__body が外側にはみ出して
+   次の要素（ページネーション等）と重なる事故になる */
 .c-card-article__link {
     display: block;
-    height: 100%;
 }
 
 .c-card-article__thumb {
@@ -857,8 +860,15 @@ body.is-nav-open {
     padding-block: 16px;
 }
 
-.c-list-news__date {
+/* 日付とカテゴリーバッジを横並びにする行（カテゴリー無しの投稿は日付だけになる） */
+.c-list-news__meta {
     grid-column: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.c-list-news__date {
     font-family: var(--font-serif);
     font-size: 12px;
     line-height: 28px;
@@ -1953,6 +1963,12 @@ body.is-nav-open {
    ------------------------------------------------------------- */
 .p-news-list {
     padding-block: 25px 52px;
+}
+
+.p-news-list__empty {
+    margin-top: 40px;
+    text-align: center;
+    color: var(--color-placeholder);
 }
 
 
