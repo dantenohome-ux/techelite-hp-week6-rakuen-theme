@@ -339,3 +339,66 @@ function rakuen_nav_menu_clear_anchor_current(array $menu_items): array
     return $menu_items;
 }
 add_filter('wp_nav_menu_objects', 'rakuen_nav_menu_clear_anchor_current');
+
+/**
+ * 「お知らせ」カスタム投稿タイプの登録。
+ *
+ * has_archive => true で /news/ の一覧（archive-news.php）が使えるようになる。
+ * supports は title / editor / thumbnail のみ（抜粋・コメントは使わない）。
+ * show_in_rest => true でブロックエディタから編集できるようにする。
+ */
+function rakuen_register_news(): void
+{
+    register_post_type('news', [
+        'label'         => 'お知らせ',
+        'labels'        => [
+            'name'          => 'お知らせ',
+            'singular_name' => 'お知らせ',
+            'add_new_item'  => 'お知らせを追加',
+        ],
+        'public'        => true,
+        'has_archive'   => true,
+        'menu_position' => 5,
+        'menu_icon'     => 'dashicons-megaphone',
+        'supports'      => ['title', 'editor', 'thumbnail'],
+        'show_in_rest'  => true,
+    ]);
+}
+add_action('init', 'rakuen_register_news');
+
+
+/**
+ * 「お知らせカテゴリー」カスタムタクソノミーの登録。
+ *
+ * hierarchical => true でカテゴリー型（タグ型ではない）。news にのみ紐付ける。
+ */
+function rakuen_register_news_cat(): void
+{
+    register_taxonomy('news_cat', 'news', [
+        'label'        => 'お知らせカテゴリー',
+        'hierarchical' => true,
+        'public'       => true,
+        'show_in_rest' => true,
+        'rewrite'      => ['slug' => 'news-cat'],
+    ]);
+}
+add_action('init', 'rakuen_register_news_cat');
+
+// 客室（カスタム投稿タイプ）を登録
+function rakuen_register_rooms() {
+  register_post_type('rooms', array(
+    'label'         => '客室',
+    'labels'        => array(
+      'name'          => '客室',
+      'singular_name' => '客室',
+      'add_new_item'  => '客室を追加',
+    ),
+    'public'        => true,
+    'has_archive'   => true,                 // /room/ の一覧を持つ
+    'menu_position' => 5,                     // 管理メニューの位置（投稿の下あたり）
+    'menu_icon'     => 'dashicons-megaphone', // メニューアイコン
+    'supports'      => array('title', 'editor', 'thumbnail'),
+    'show_in_rest'  => true,                  // ブロックエディタで編集
+  ));
+}
+add_action('init', 'rakuen_register_rooms');

@@ -27,12 +27,7 @@ $theme_uri = get_template_directory_uri();
 while (have_posts()) :
     the_post();
 
-    get_template_part('template-parts/breadcrumb', null, [
-        'items' => [
-            ['href' => home_url('/'), 'label' => 'トップ'],
-            ['label' => get_the_title()],
-        ],
-    ]);
+    get_template_part('template-parts/breadcrumb');
 
     /* ---- 掲載データ ------------------------------------------------
        写真はすべて Figma からの書き出し。
