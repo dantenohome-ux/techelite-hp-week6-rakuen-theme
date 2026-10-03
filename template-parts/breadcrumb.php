@@ -38,6 +38,10 @@ if ($items === null) {
         // お知らせ詳細
         $items[] = ['href' => get_post_type_archive_link('news'), 'label' => 'お知らせ'];
         $items[] = ['label' => get_the_title()];
+    } elseif (is_singular('rooms')) {
+        // 客室詳細
+        $items[] = ['href' => get_post_type_archive_link('rooms'), 'label' => '客室'];
+        $items[] = ['label' => get_the_title()];
     } elseif (is_post_type_archive('news')) {
         // お知らせ一覧
         $items[] = ['label' => 'お知らせ'];

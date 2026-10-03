@@ -2513,6 +2513,22 @@ body.is-nav-open {
 
 
 /* =============================================================
+   客室詳細（p-room-detail）
+
+   1カラム。見出し・アイキャッチ・本文は .p-article__* を使い回す。
+   ※ .p-room は TOP のお部屋セクション用なので使わない
+   ============================================================= */
+
+.p-room-detail {
+    padding-block: 27px 52px;
+}
+
+.p-room-detail__spec {
+    margin-top: 24px;
+}
+
+
+/* =============================================================
    お知らせ詳細（p-news-detail）
 
    見出しと日付はブログ詳細と同じ見た目なので
@@ -3742,6 +3758,14 @@ body.is-nav-open {
     }
 
     /* ---- お知らせ詳細 ---- */
+
+    .p-room-detail {
+        padding-block: 86px 120px;
+    }
+
+    .p-room-detail__spec {
+        margin-top: 32px;
+    }
 
     .p-news-detail {
         padding-block: 86px 200px;
