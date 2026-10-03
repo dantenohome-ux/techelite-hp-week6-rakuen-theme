@@ -12,12 +12,7 @@
 
 get_header();
 
-get_template_part('template-parts/breadcrumb', null, [
-    'items' => [
-        ['href' => home_url('/'), 'label' => 'トップ'],
-        ['label' => 'ブログ'],
-    ],
-]);
+get_template_part('template-parts/breadcrumb');
 ?>
 
 <div class="p-page-head">

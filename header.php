@@ -19,34 +19,16 @@ $theme_uri = get_template_directory_uri();
 
 // TOP かどうか。TOP だけヘッダーの背景帯を外し、ヒーロー画像に透過で重ねる（Figma準拠）
 $is_top = is_front_page();
-
-// 説明文は「設定 → 一般 → キャッチフレーズ」の値を使う
-$site_description = get_bloginfo('description', 'display');
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<?php if ($site_description !== '') : ?>
-    <meta name="description" content="<?php echo esc_attr($site_description); ?>">
-<?php endif; ?>
 
-    <!-- OGP（SNSシェア時のカード表示用）
-         TODO: og:image は画像（ogp.png）を用意したうえで追加すること -->
-    <meta property="og:type" content="<?php echo $is_top ? 'website' : 'article'; ?>">
-    <meta property="og:site_name" content="<?php echo esc_attr(get_bloginfo('name')); ?>">
-    <meta property="og:title" content="<?php echo esc_attr(wp_get_document_title()); ?>">
-<?php if ($site_description !== '') : ?>
-    <meta property="og:description" content="<?php echo esc_attr($site_description); ?>">
-<?php endif; ?>
-    <meta property="og:url" content="<?php echo esc_url(is_singular() ? get_permalink() : home_url('/')); ?>">
-    <meta property="og:locale" content="ja_JP">
-
-    <!-- Twitter Card（画像未設定のため summary。og:image を用意したら
-         summary_large_image に変更する） -->
-    <meta name="twitter:card" content="summary">
-
+    <!-- meta description / canonical / OGP / Twitter Card は、プラグイン
+         （SEO SIMPLE PACK）が wp_head() で出力する。テーマ側では書かない
+         （書くと二重に出力される） -->
     <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>

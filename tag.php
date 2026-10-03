@@ -8,13 +8,7 @@
 
 get_header();
 
-get_template_part('template-parts/breadcrumb', null, [
-    'items' => [
-        ['href' => home_url('/'), 'label' => 'トップ'],
-        ['href' => get_permalink(get_option('page_for_posts')), 'label' => 'ブログ'],
-        ['label' => single_tag_title('', false)],
-    ],
-]);
+get_template_part('template-parts/breadcrumb');
 ?>
 
 <div class="p-page-head">
