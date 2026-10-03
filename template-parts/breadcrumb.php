@@ -12,6 +12,10 @@
            ],
        ]);
 
+   'items' を渡さずに呼んだ場合（page-service.php / archive-news.php /
+   single-news.php など）は、is_singular() 等から自分で項目を組み立てる。
+   既存の呼び出し側（items を渡しているテンプレート）の動作は変えない。
+
    仕様は静的サイト版（includes/breadcrumb.php）と同じ：
      ・最後の項目はリンクにせず aria-current="page" を付ける
      ・区切りの「＞」は HTML に書かず CSS の ::before で描く
@@ -21,7 +25,37 @@
    項目が無いときは何も出力しない（TOP 用）。
    ============================================================= */
 
-$items = $args['items'] ?? [];
+$items = is_array($args) ? ($args['items'] ?? null) : null;
+
+if ($items === null) {
+    $items = [];
+
+    if (is_singular('post')) {
+        // ブログ詳細
+        $items[] = ['href' => get_permalink(get_option('page_for_posts')), 'label' => 'ブログ'];
+        $items[] = ['label' => get_the_title()];
+    } elseif (is_singular('news')) {
+        // お知らせ詳細
+        $items[] = ['href' => get_post_type_archive_link('news'), 'label' => 'お知らせ'];
+        $items[] = ['label' => get_the_title()];
+    } elseif (is_post_type_archive('news')) {
+        // お知らせ一覧
+        $items[] = ['label' => 'お知らせ'];
+    } elseif (is_tax('news_cat')) {
+        // お知らせのカテゴリー別一覧
+        $items[] = ['href' => get_post_type_archive_link('news'), 'label' => 'お知らせ'];
+        $items[] = ['label' => single_term_title('', false)];
+    } elseif (is_category()) {
+        $items[] = ['href' => get_permalink(get_option('page_for_posts')), 'label' => 'ブログ'];
+        $items[] = ['label' => single_cat_title('', false)];
+    } elseif (is_page()) {
+        $items[] = ['label' => get_the_title()];
+    }
+
+    if ($items !== []) {
+        array_unshift($items, ['href' => home_url('/'), 'label' => 'トップ']);
+    }
+}
 
 if ($items === []) {
     return;
