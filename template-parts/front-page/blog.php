@@ -2,24 +2,21 @@
 /* =============================================================
    TOP 7. ブログ
 
-   記事カード1枚ぶんの組み立ては、静的サイトと共通の
-   includes/card-article.php に任せる（$card に内容を入れて require）。
-   そのファイルが h() を使うため、includes/functions.php も先に読み込む。
+   投稿の新着3件をサブループで表示する。カードは一覧・関連記事と
+   完全共通の template-parts/post-card.php（.c-card-article）。
+   TOPは h2 の下なので heading は h3、Figmaのカード高さに
+   抜粋は含まないため excerpt は false にする。
 
-   TODO: いまは Figma のダミー3件。WordPress の投稿から取得する形に
-         差し替えること（その際 href は get_permalink() になる）。
+   メインループ（front-page.php 自体はループを回していない）とは
+   別のクエリなので、使い終わったら wp_reset_postdata() で
+   グローバル $post を固定ページ（TOP）のものに戻す。
    ============================================================= */
 
-$theme_uri = get_template_directory_uri();
-
-// h()（card-article.php が使う出力エスケープ）を読み込む
-require_once get_template_directory() . '/includes/functions.php';
-
-$top_posts = [
-    ['date' => '2023/00/00', 'title' => 'ブログタイトルブログタイトルブログタイトルブログタイトル', 'category' => '観光地'],
-    ['date' => '2023/00/00', 'title' => 'ブログタイトルブログタイトルブログタイトルブログタイトル', 'category' => '豆知識'],
-    ['date' => '2023/00/00', 'title' => 'ブログタイトルブログタイトルブログタイトルブログタイトル', 'category' => '料理'],
-];
+$recent_posts = new WP_Query([
+    'post_type'      => 'post',
+    'posts_per_page' => 3,
+    'no_found_rows'  => true,
+]);
 ?>
         <section class="p-blog">
             <div class="p-blog__inner l-inner">
@@ -30,17 +27,14 @@ $top_posts = [
                     <span class="c-section-title__en">blog</span>
                 </h2>
 
-                <ul class="p-blog__list">
-                    <?php foreach ($top_posts as $card) : ?>
-                        <?php
-                        // リンク先と画像は WordPress 用のパスを呼び出し側から渡す
-                        // （card-article.php の既定値は静的サイト用のパスのため）
-                        $card['href']  = home_url('/blog/');
-                        $card['thumb'] = $theme_uri . '/assets/images/top/blog-thumb.jpg';
-                        require get_template_directory() . '/includes/card-article.php';
-                        ?>
-                    <?php endforeach; ?>
-                </ul>
+                <?php if ($recent_posts->have_posts()) : ?>
+                    <div class="p-blog__list">
+                        <?php while ($recent_posts->have_posts()) : $recent_posts->the_post(); ?>
+                            <?php get_template_part('template-parts/post-card', null, ['heading' => 'h3', 'excerpt' => false]); ?>
+                        <?php endwhile; ?>
+                    </div>
+                    <?php wp_reset_postdata(); ?>
+                <?php endif; ?>
 
                 <div class="p-blog__action">
                     <a class="c-btn-more" href="<?php echo esc_url(home_url('/blog/')); ?>">

@@ -2,8 +2,8 @@
 /* =============================================================
    汎用アーカイブ（archive.php）
 
-   カテゴリー以外のアーカイブ（タグ・日付など）で使われる。
-   カテゴリーアーカイブは category.php が優先されるため、
+   カテゴリー・タグ以外のアーカイブ（日付・投稿者など）で使われる。
+   カテゴリーは category.php、タグは tag.php が優先されるため、
    ここでは the_archive_title() を汎用の見出しとして使う。
 
    見た目は home.php のブログ一覧（.p-blog-list）と共通。
@@ -35,16 +35,7 @@ get_template_part('template-parts/breadcrumb', null, [
                 <?php endwhile; ?>
             </div>
 
-            <div class="c-pagination">
-                <?php
-                the_posts_pagination([
-                    'mid_size'           => 1,
-                    'prev_text'          => '← 前へ',
-                    'next_text'          => '次へ →',
-                    'screen_reader_text' => 'ページ送り',
-                ]);
-                ?>
-            </div>
+            <?php get_template_part('template-parts/pagination'); ?>
 
         <?php else : ?>
             <p class="p-blog-list__empty">該当する記事がありません。</p>
