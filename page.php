@@ -17,12 +17,7 @@ get_header();
 while (have_posts()) :
     the_post();
 
-    get_template_part('template-parts/breadcrumb', null, [
-        'items' => [
-            ['href' => home_url('/'), 'label' => 'トップ'],
-            ['label' => get_the_title()],
-        ],
-    ]);
+    get_template_part('template-parts/breadcrumb');
     ?>
 
         <div class="p-page-head">

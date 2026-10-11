@@ -25,12 +25,7 @@ get_header();
 while (have_posts()) :
     the_post();
 
-    get_template_part('template-parts/breadcrumb', null, [
-        'items' => [
-            ['href' => home_url('/'), 'label' => 'トップ'],
-            ['label' => get_the_title()],
-        ],
-    ]);
+    get_template_part('template-parts/breadcrumb');
 
     /* ---- 会社概要 ------------------------------------------------
        type は値の出し方の違いだけを表す：
