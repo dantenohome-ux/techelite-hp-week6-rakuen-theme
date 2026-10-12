@@ -412,3 +412,83 @@ function rakuen_register_rooms() {
   ));
 }
 add_action('init', 'rakuen_register_rooms');
+
+// 楽園雅苑パターンのカテゴリを登録
+function rakuen_register_pattern_category() {
+  register_block_pattern_category('rakuen', array(
+    'label' => '楽園雅苑パターン',
+  ));
+}
+add_action('init', 'rakuen_register_pattern_category');
+
+// CTA（お問い合わせ誘導）パターン
+// 色は theme.json のパレットの slug（main / base / sumi）で指定する
+function rakuen_register_patterns() {
+  $contact_url = esc_url(home_url('/contact/'));
+
+  register_block_pattern('rakuen/cta', array(
+    'title'       => 'CTA（お問い合わせ誘導）',
+    'description' => '見出し＋ボタンのお問い合わせ誘導セクション',
+    'categories'  => array('rakuen'),
+    'content'     => '<!-- wp:group {"align":"wide","backgroundColor":"main","layout":{"type":"constrained"}} -->
+<div class="wp-block-group alignwide has-main-background-color has-background">
+<!-- wp:heading {"textAlign":"center","textColor":"base"} -->
+<h2 class="wp-block-heading has-text-align-center has-base-color has-text-color">ご宿泊のご相談を承ります</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph {"align":"center","textColor":"base"} -->
+<p class="has-text-align-center has-base-color has-text-color">空室状況・お食事・記念日のご相談も、お気軽にお問い合わせください。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} -->
+<div class="wp-block-buttons">
+<!-- wp:button {"backgroundColor":"base","textColor":"sumi"} -->
+<div class="wp-block-button"><a class="wp-block-button__link has-sumi-color has-base-background-color has-text-color has-background wp-element-button" href="' . $contact_url . '">お問い合わせ・ご予約のご相談</a></div>
+<!-- /wp:button -->
+</div>
+<!-- /wp:buttons -->
+</div>
+<!-- /wp:group -->',
+  ));
+
+  // 宿泊プラン料金表（項目と値の2列）。罫線などの見た目は
+  // .rakuen-price-table（style.css / editor-style.css）で付ける
+  register_block_pattern('rakuen/plan-price-table', array(
+    'title'       => '宿泊プラン料金表',
+    'description' => '客室タイプ・定員・広さ・眺望・1泊料金を並べる2列の表',
+    'categories'  => array('rakuen'),
+    'content'     => '<!-- wp:table {"hasFixedLayout":true,"className":"rakuen-price-table"} -->
+<figure class="wp-block-table rakuen-price-table"><table class="has-fixed-layout"><tbody><tr><td>客室タイプ</td><td>露天風呂付客室</td></tr><tr><td>定員</td><td>4</td></tr><tr><td>広さ</td><td>120㎡</td></tr><tr><td>眺望</td><td>日本庭園</td></tr><tr><td>1泊料金</td><td>60,000円</td></tr></tbody></table></figure>
+<!-- /wp:table -->',
+  ));
+
+  // スタッフ紹介（写真＋名前・役職・紹介文の2カラム）。
+  // 写真は挿入後にメディアから選ぶ。文字サイズは theme.json の S を使う
+  register_block_pattern('rakuen/staff', array(
+    'title'       => 'スタッフ紹介',
+    'description' => '写真と、名前・役職・紹介文を横に並べるスタッフ紹介',
+    'categories'  => array('rakuen'),
+    'content'     => '<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image -->
+<figure class="wp-block-image"><img alt=""/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">山田 太郎</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph {"fontSize":"small"} -->
+<p class="has-small-font-size">女将</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>当館で長年おもてなしを担当しております。四季折々の景色とともに、ゆったりとお過ごしいただけるようお迎えいたします。</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->',
+  ));
+}
+add_action('init', 'rakuen_register_patterns');
