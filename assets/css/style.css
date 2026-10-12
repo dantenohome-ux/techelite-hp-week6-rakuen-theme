@@ -548,6 +548,13 @@ body.is-nav-open {
     font-size: 12px;
 }
 
+/* ウィジェット（フッター案内）で置いたブロックの見た目。
+   既定の表示と同じく、電話番号などのリンクに下線を付ける */
+.l-footer__widget a {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
 .l-footer__menu--sub {
     gap: 6px;
 }

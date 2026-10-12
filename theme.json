@@ -18,6 +18,28 @@
         { "slug": "sumi",   "color": "#383838", "name": "墨（文字）" }
       ]
     },
+    "spacing": {
+      "defaultSpacingSizes": false,
+      "customSpacingSize": false,
+      "padding": true,
+      "blockGap": true,
+      "units": ["px", "rem"],
+      "spacingSizes": [
+        { "slug": "sm", "size": "16px", "name": "S（16px）" },
+        { "slug": "md", "size": "24px", "name": "M（24px）" },
+        { "slug": "lg", "size": "40px", "name": "L（40px）" },
+        { "slug": "xl", "size": "80px", "name": "XL（80px）" }
+      ]
+    },
+    "border": {
+      "radius": true,
+      "radiusSizes": [
+        { "slug": "small",  "size": "4px",  "name": "小（4px）" },
+        { "slug": "medium", "size": "13px", "name": "中（13px）" },
+        { "slug": "large",  "size": "20px", "name": "大（20px）" },
+        { "slug": "pill",   "size": "30px", "name": "丸（30px）" }
+      ]
+    },
     "typography": {
       "customFontSize": false,
       "fontSizes": [
