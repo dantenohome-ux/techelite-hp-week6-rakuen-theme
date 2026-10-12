@@ -15,7 +15,7 @@
         { "slug": "base",   "color": "#ffffff", "name": "白（ページ背景）" },
         { "slug": "main",   "color": "#b8a973", "name": "金（メイン）" },
         { "slug": "kinari", "color": "#faf8f0", "name": "生成り" },
-        { "slug": "text",   "color": "#383838", "name": "墨（文字）" }
+        { "slug": "sumi",   "color": "#383838", "name": "墨（文字）" }
       ]
     },
     "typography": {
