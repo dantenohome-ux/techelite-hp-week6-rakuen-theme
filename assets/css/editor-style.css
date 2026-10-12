@@ -1,0 +1,86 @@
+/* =============================================================
+   ブロックエディタ用CSS（表示側 style.css と見た目を揃える）
+
+   add_editor_style() で読み込む。エディタの本文は iframe の中に
+   あり、表示側の style.css や :root の変数は届かない。
+   そのため必要な変数をここで定義し直している。
+   値は theme.json のパレット・style.css の変数と必ず同じにすること
+   （食い違った場合は theme.json に合わせる）。
+
+   ブロックの背景色・文字色（has-main-background-color 等）は
+   theme.json のパレットから WordPress が自動で出力するので、
+   ここには書かない。
+   ============================================================= */
+
+/* iframe 内にはフォントが届かないため、ここで読み込む
+   （表示側は functions.php の rakuen_enqueue_assets() で読み込み） */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&display=swap");
+
+:root {
+    --color-text:      #383838;
+    --color-bg:        #ffffff;
+    --color-main:      #b8a973;
+    --color-bg-kinari: #faf8f0;
+    --color-border:    #e4e4e4;
+
+    /* 明朝（Noto Serif JP）。表示側 style.css と同じ指定 */
+    --font-sans:  "Hiragino Sans", "Meiryo", sans-serif;
+    --font-serif: "Noto Serif JP", "Yu Mincho", "游明朝", serif;
+
+    --letter-spacing: .3em;
+}
+
+/* ---- 土台：表示側 body と同じ ----
+   表示側は Figma に合わせて本文も明朝のため、ここも明朝にしている。
+   本文をゴシックにしたくなったら --font-sans に差し替える */
+.editor-styles-wrapper {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-serif);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.75;
+}
+
+/* 字間は全要素 0.3em（style.css の * と同じ） */
+.editor-styles-wrapper *,
+.editor-styles-wrapper *::before,
+.editor-styles-wrapper *::after {
+    letter-spacing: var(--letter-spacing);
+}
+
+/* ---- 見出し：明朝・細字（style.css の h1〜h6 と同じ） ---- */
+.editor-styles-wrapper h1,
+.editor-styles-wrapper h2,
+.editor-styles-wrapper h3,
+.editor-styles-wrapper h4,
+.editor-styles-wrapper h5,
+.editor-styles-wrapper h6 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.editor-styles-wrapper h1 { font-size: 2rem; }
+.editor-styles-wrapper h2 { font-size: 1.75rem; }
+.editor-styles-wrapper h3 { font-size: 1.25rem; }
+.editor-styles-wrapper h4,
+.editor-styles-wrapper h5,
+.editor-styles-wrapper h6 { font-size: 1rem; }
+
+/* ---- 本文まわり ---- */
+.editor-styles-wrapper a {
+    color: inherit;
+    text-decoration: underline;
+}
+
+.editor-styles-wrapper img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* ---- ボタンブロック：ラベルの字間を表示側と揃える ---- */
+.editor-styles-wrapper .wp-block-button__link {
+    font-family: var(--font-serif);
+    text-decoration: none;
+}

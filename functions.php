@@ -16,6 +16,11 @@
  * title-tag       … <title> を WordPress 側に出力させる。
  *                   各テンプレートに <title> を書かなくてよくなる。
  * post-thumbnails … 投稿・固定ページでアイキャッチ画像を使えるようにする。
+ * wp-block-styles  … 各ブロックの標準スタイルを読み込む。
+ * align-wide       … ブロックの「幅広」「全幅」配置を許可する。
+ * responsive-embeds … 埋め込み(YouTube 等)をレスポンシブにする。
+ * editor-styles    … エディタに独自 CSS を適用する宣言。
+ *                    add_editor_style() の前提になる。
  *
  * register_nav_menus() で登録した表示位置が、管理画面の
  * 「外観 → メニュー → メニュー設定（表示位置）」に並ぶ。
@@ -28,6 +33,11 @@ function rakuen_setup(): void
 {
     add_theme_support('title-tag');
     add_theme_support('post-thumbnails');
+    add_theme_support('wp-block-styles');
+    add_theme_support('align-wide');
+    add_theme_support('responsive-embeds');
+    add_theme_support('editor-styles');
+    add_editor_style('assets/css/editor-style.css'); // ステップ3で作成
 
     // 記事カード（.c-card-article__thumb）用。Figma実測 380×230、trueで切り抜き
     add_image_size('blog-thumb', 380, 230, true);
