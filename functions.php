@@ -430,7 +430,7 @@ function rakuen_register_patterns() {
     'title'       => 'CTA（お問い合わせ誘導）',
     'description' => '見出し＋ボタンのお問い合わせ誘導セクション',
     'categories'  => array('rakuen'),
-    'content'     => '<!-- wp:group {"align":"wide","backgroundColor":"main","layout":{"type":"constrained"}} -->
+    'content'     => '<!-- wp:group {"align":"wide","backgroundColor":"main","lock":{"move":true,"remove":true},"layout":{"type":"constrained"}} -->
 <div class="wp-block-group alignwide has-main-background-color has-background">
 <!-- wp:heading {"textAlign":"center","textColor":"base"} -->
 <h2 class="wp-block-heading has-text-align-center has-base-color has-text-color">ご宿泊のご相談を承ります</h2>
@@ -440,9 +440,9 @@ function rakuen_register_patterns() {
 <p class="has-text-align-center has-base-color has-text-color">空室状況・お食事・記念日のご相談も、お気軽にお問い合わせください。</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} -->
+<!-- wp:buttons {"lock":{"move":true,"remove":true},"layout":{"type":"flex","justifyContent":"center"}} -->
 <div class="wp-block-buttons">
-<!-- wp:button {"backgroundColor":"base","textColor":"sumi"} -->
+<!-- wp:button {"backgroundColor":"base","textColor":"sumi","lock":{"move":true,"remove":true}} -->
 <div class="wp-block-button"><a class="wp-block-button__link has-sumi-color has-base-background-color has-text-color has-background wp-element-button" href="' . $contact_url . '">お問い合わせ・ご予約のご相談</a></div>
 <!-- /wp:button -->
 </div>
@@ -468,23 +468,23 @@ function rakuen_register_patterns() {
     'title'       => 'スタッフ紹介',
     'description' => '写真と、名前・役職・紹介文を横に並べるスタッフ紹介',
     'categories'  => array('rakuen'),
-    'content'     => '<!-- wp:columns -->
+    'content'     => '<!-- wp:columns {"lock":{"move":true,"remove":true}} -->
 <div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
-<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"lock":{"move":true,"remove":true}} -->
 <figure class="wp-block-image"><img alt=""/></figure>
 <!-- /wp:image --></div>
 <!-- /wp:column -->
 
 <!-- wp:column {"width":"66.66%"} -->
-<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":3} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":3,"lock":{"move":true,"remove":true}} -->
 <h3 class="wp-block-heading">山田 太郎</h3>
 <!-- /wp:heading -->
 
-<!-- wp:paragraph {"fontSize":"small"} -->
+<!-- wp:paragraph {"fontSize":"small","lock":{"move":true,"remove":true}} -->
 <p class="has-small-font-size">女将</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:paragraph -->
+<!-- wp:paragraph {"lock":{"move":true,"remove":true}} -->
 <p>当館で長年おもてなしを担当しております。四季折々の景色とともに、ゆったりとお過ごしいただけるようお迎えいたします。</p>
 <!-- /wp:paragraph --></div>
 <!-- /wp:column --></div>
@@ -492,3 +492,20 @@ function rakuen_register_patterns() {
   ));
 }
 add_action('init', 'rakuen_register_patterns');
+
+
+// フッター用のウィジェットエリアを登録
+// 管理画面「外観 → ウィジェット」でブロックを置くと、footer.php の
+// 宿の情報（NAP）の位置に出る。未設定のときは footer.php の既定の表示になる
+function rakuen_register_widgets() {
+  register_sidebar(array(
+    'name'          => 'フッター案内',
+    'id'            => 'footer-info',
+    'description'   => 'チェックイン時間・アクセスのご案内など、クライアントが自由に編集できる領域',
+    'before_widget' => '<div class="l-footer__widget %2$s">',
+    'after_widget'  => '</div>',
+    'before_title'  => '<h2 class="l-footer__widget-title">',
+    'after_title'   => '</h2>',
+  ));
+}
+add_action('widgets_init', 'rakuen_register_widgets');

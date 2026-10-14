@@ -39,13 +39,20 @@ $theme_uri = get_template_directory_uri();
                  全ページのフッターに置くのが宿泊施設サイトの定石（ローカルSEO・信頼性）
                  TODO: 住所・電話番号・営業情報はすべてダミー。実データに差し替えること -->
             <div class="l-footer__info">
-                <p class="l-footer__hotel-name"><?php bloginfo('name'); ?></p>
-                <address class="l-footer__address">
-                    〒000-0000　○○県桜庭市桜庭温泉 1-2-3<br>
-                    TEL <a class="l-footer__tel" href="tel:0000000000">00-0000-0000</a>
-                    <span class="l-footer__hours">（受付 9:00〜20:00）</span>
-                </address>
-                <p class="l-footer__operator">運営：桜庭観光株式会社</p>
+                <?php if (is_active_sidebar('footer-info')) : ?>
+                    <!-- 管理画面「外観 → ウィジェット」の「フッター案内」。
+                         何か置かれているときは、こちらを優先して出す -->
+                    <?php dynamic_sidebar('footer-info'); ?>
+                <?php else : ?>
+                    <!-- ウィジェット未設定のときの既定の表示 -->
+                    <p class="l-footer__hotel-name"><?php bloginfo('name'); ?></p>
+                    <address class="l-footer__address">
+                        〒000-0000　○○県桜庭市桜庭温泉 1-2-3<br>
+                        TEL <a class="l-footer__tel" href="tel:0000000000">00-0000-0000</a>
+                        <span class="l-footer__hours">（受付 9:00〜20:00）</span>
+                    </address>
+                    <p class="l-footer__operator">運営：桜庭観光株式会社</p>
+                <?php endif; ?>
             </div>
 
             <!-- サブナビ（運営会社情報 / プライバシーポリシー / 利用規約） -->
